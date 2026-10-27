@@ -33,5 +33,4 @@
 body{background:linear-gradient(180deg,#f7fbff 0%,#ebf5fe 45%,#cfe5ff 100%) fixed;min-height:100vh}
 h1{color:var(--purple)}
 .camera-stage{background:#ebf5fe}
-.drive-share{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:center;margin-top:22px;padding:16px;background:#fff;border:1px solid var(--lilac);box-shadow:3px 3px 0 #24096014}.drive-share canvas{display:block;width:150px;height:auto;image-rendering:pixelated}.drive-share h3{font:500 22px/1 var(--pixel);color:var(--purple);margin:0 0 8px}.drive-share p{font-size:11px;line-height:1.7;color:var(--muted);margin:0 0 8px}.drive-share a{font-size:11px;color:var(--purple);text-decoration:underline}
 @media(max-width:700px){.drive-share{grid-template-columns:1fr;text-align:center}.drive-share canvas{margin:auto;width:140px}}
