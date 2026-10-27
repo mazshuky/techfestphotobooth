@@ -14,12 +14,12 @@ Before the event, expand **Booth archive** at the top of the site, press **Choos
 
 ```text
 Downloads/
-  cssbooth/
+  tfbooth/
     photo/   # Finished four-photo PNG strips
     video/   # Silent MP4 strips with four camera clips playing together
 ```
 
-You can also select an existing `cssbooth` folder. The app remembers the folder handle, but the browser may ask you to enable permission again after restarting. Only the folder handle is stored in IndexedDB; photos are never saved in browser storage. Selecting another parent folder puts `cssbooth` inside that folder.
+You can also select an existing `tfbooth` folder. The app remembers the folder handle, but the browser may ask you to enable permission again after restarting. Only the folder handle is stored in IndexedDB; photos are never saved in browser storage. Selecting another parent folder puts `tfbooth` inside that folder.
 
 Once permission is enabled, PNGs and MP4s save automatically as they are created. Existing files in an older `picture` folder stay there. Permanent local copies do not expire. Photo and video downloads work even if the operator has not enabled the local archive. A website cannot silently choose a filesystem folder without browser permission.
 

@@ -8,7 +8,7 @@ const session = new PhotoSession();
 const canvas = $('scene'), ctx = canvas.getContext('2d', { alpha: false }), video = $('camera');
 const state = { clips: [], clipRecorder: null, mode: 'off', view: 'capture', design: DEFAULT_FRAME, stream: null, opening: false, timer: null, deadline: 0, generation: 0, previewRevision: 0, resultUrl: null, resultBlob: null, resultKey: null, videoBlob: null, videoPromise: null, photoArchived: false, videoArchived: false, exportRevision: 0 };
 const logos = { css: new Image(), nottingham: new Image() };
-logos.css.src = 'assets/css-logo.png'; logos.nottingham.src = 'assets/nottingham-logo.png';
+logos.css.src = 'assets/tf-logo.png'; logos.nottingham.src = 'assets/nottingham-logo.png';
 const assetsReady = Promise.all(Object.values(logos).map(image => image.decode().catch(() => {}))).then(() => document.fonts.ready);
 const photoImages = new Map();
 
@@ -95,16 +95,16 @@ function startDemo() {
 function ellipse(x, y, rx, ry, colour) { ctx.fillStyle = colour; ctx.beginPath(); ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2); ctx.fill(); }
 function drawDemo(now) {
   const pose = session.photos.length % PHOTO_COUNT;
-  const colours = ['#b9b0d6', '#b9cfbf', '#d9b4cb', '#b8c4dd', '#d7bfb1', '#b8c7c1', '#c5b7dd', '#dfc0d3'];
+  const colours = ['#9fcdff', '#b9cfbf', '#d9b4cb', '#b8c4dd', '#d7bfb1', '#b8c7c1', '#cfe5ff', '#dfc0d3'];
   const gradient = ctx.createLinearGradient(0, 0, 1280, 960); gradient.addColorStop(0, '#ede5e0'); gradient.addColorStop(1, colours[pose]);
   ctx.fillStyle = gradient; ctx.fillRect(0, 0, 1280, 960);
   ctx.fillStyle = '#ffffff38'; for (let x = 0; x < 1280; x += 80) ctx.fillRect(x, 0, 1, 960);
-  ctx.font = '500 70px "Pixelify Sans", monospace'; ctx.fillStyle = '#7070a238'; ctx.textAlign = 'center'; ctx.fillText('WE BUILD', 640, 210);
+  ctx.font = '500 70px "Pixelify Sans", monospace'; ctx.fillStyle = '#24096038'; ctx.textAlign = 'center'; ctx.fillText('WE BUILD', 640, 210);
   [310, 640, 965].forEach((x, person) => {
     const bob = Math.sin(now / 800 + person) * 8;
     const y = 470 + bob + Math.sin(pose * 1.6 + person) * 24;
     const tilt = Math.sin(pose + person) * .12;
-    const skins = ['#d2a07c', '#edc4a4', '#bc876b'], shirts = ['#7070a2', '#98c9aa', '#d694bc'];
+    const skins = ['#d2a07c', '#edc4a4', '#bc876b'], shirts = ['#240960', '#98c9aa', '#d694bc'];
     ctx.save(); ctx.translate(x, y); ctx.rotate(tilt);
     ellipse(0, 350, 195, 260, shirts[person]); ellipse(0, -14, 119, 152, '#393248');
     if (person === 2) ellipse(0, 95, 138, 172, '#393248');
@@ -123,20 +123,19 @@ function drawDemo(now) {
     }
     ctx.restore();
   });
-  ctx.textAlign = 'right'; ctx.font = '500 23px "Pixelify Sans", monospace'; ctx.fillStyle = '#57516b'; ctx.fillText(`DEMO / POSE ${String(pose + 1).padStart(2, '0')}`, 1230, 913);
+  ctx.textAlign = 'right'; ctx.font = '500 23px "Pixelify Sans", monospace'; ctx.fillStyle = '#240960'; ctx.fillText(`DEMO / POSE ${String(pose + 1).padStart(2, '0')}`, 1230, 913);
 }
 function drawScene(now) {
   if (state.mode === 'camera' && video.readyState >= 2 && video.videoWidth && video.videoHeight) {
     const fit = containFit(video.videoWidth, video.videoHeight, canvas.width, canvas.height);
-    ctx.fillStyle = '#363449'; ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.save(); ctx.translate(canvas.width, 0); ctx.scale(-1, 1); ctx.filter = 'brightness(1.04) saturate(.96)';
     ctx.drawImage(video, fit.x, fit.y, fit.width, fit.height); ctx.restore();
   } else if (state.mode === 'demo') drawDemo(now);
   else {
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, '#dcd5e9'); gradient.addColorStop(.65, '#c4c1df'); gradient.addColorStop(1, '#c5ddd0');
+    gradient.addColorStop(0, '#ebf5fe'); gradient.addColorStop(.65, '#9fcdff'); gradient.addColorStop(1, '#c5ddd0');
     ctx.fillStyle = gradient; ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#7070a21a';
+    ctx.fillStyle = '#2409601a';
     for (let x = 0; x < canvas.width; x += 70) ctx.fillRect(x, 0, 1, canvas.height);
     for (let y = 0; y < canvas.height; y += 70) ctx.fillRect(0, y, canvas.width, 1);
     ctx.save(); ctx.translate(1100, 790); ctx.rotate(.3); ctx.fillStyle = '#f1a1db90';
@@ -310,13 +309,13 @@ async function archiveStrip(blob, generation) {
     const saved = await saveToArchive('photo', blob, archiveFilename('png'));
     if (generation === state.generation && state.resultBlob === blob) {
       state.photoArchived = saved;
-      $('archive-status').textContent = saved ? state.videoArchived ? '✓ Photo and MP4 saved in cssbooth/photo and cssbooth/video.' : '✓ Photo saved in cssbooth/photo.' : 'To keep automatic copies on this computer, choose a folder under Booth archive.';
+      $('archive-status').textContent = saved ? state.videoArchived ? '✓ Photo and MP4 saved in tfbooth/photo and tfbooth/video.' : '✓ Photo saved in tfbooth/photo.' : 'To keep automatic copies on this computer, choose a folder under Booth archive.';
     }
   } catch {
     if (generation === state.generation && state.resultBlob === blob) $('archive-status').textContent = 'Could not save to the archive folder. Download your photo here to keep a copy.';
   }
 }
-function archiveFilename(extension) { return `css-four-cut-${session.date.toISOString().replace(/[:.]/g, '-')}-${state.design}.${extension}`; }
+function archiveFilename(extension) { return `tf-four-cut-${session.date.toISOString().replace(/[:.]/g, '-')}-${state.design}.${extension}`; }
 async function ensureVideo() {
   if (state.videoBlob) return state.videoBlob;
   if (state.videoPromise) return state.videoPromise;
@@ -334,7 +333,7 @@ async function ensureVideo() {
       const saved = await saveToArchive('video', blob, filename);
       if (active() && saved) {
         state.videoArchived = true;
-        $('archive-status').textContent = state.photoArchived ? '✓ Photo and MP4 saved in cssbooth/photo and cssbooth/video.' : '✓ MP4 saved in cssbooth/video. Download the PNG to keep a photo copy.';
+        $('archive-status').textContent = state.photoArchived ? '✓ Photo and MP4 saved in tfbooth/photo and tfbooth/video.' : '✓ MP4 saved in tfbooth/video. Download the PNG to keep a photo copy.';
       }
     } catch { if (active()) $('archive-status').textContent = 'The video is ready. Download it here, or re-enable the archive folder.'; }
     return blob;
@@ -351,7 +350,7 @@ async function downloadStrip() {
   const result = await makeStrip();
   if (!result || result.url !== state.resultUrl) return;
   const link = document.createElement('a'); link.href = result.url;
-  link.download = `css-four-cut-${session.date.toISOString().replace(/[:.]/g, '-')}.png`;
+  link.download = `tf-four-cut-${session.date.toISOString().replace(/[:.]/g, '-')}.png`;
   document.body.append(link); link.click(); link.remove();
 }
 async function downloadVideo() {
@@ -398,17 +397,17 @@ window.addEventListener('beforeunload', () => { stopTimer(); state.stream?.getTr
 $('choose-archive').addEventListener('click', async () => {
   try {
     await chooseArchive();
-    $('archive-folder-status').textContent = '✓ Automatic saves enabled: cssbooth/photo and cssbooth/video.';
+    $('archive-folder-status').textContent = '✓ Automatic saves enabled: tfbooth/photo and tfbooth/video.';
     const generation = state.generation, revision = state.exportRevision;
     if (state.resultBlob) await archiveStrip(state.resultBlob, generation);
     if (state.videoBlob) {
       const saved = await saveToArchive('video', state.videoBlob, archiveFilename('mp4'));
       if (saved && generation === state.generation && revision === state.exportRevision) {
         state.videoArchived = true;
-        $('archive-status').textContent = state.photoArchived ? '✓ Photo and MP4 saved in cssbooth/photo and cssbooth/video.' : '✓ MP4 saved in cssbooth/video. Download the PNG to keep a photo copy.';
+        $('archive-status').textContent = state.photoArchived ? '✓ Photo and MP4 saved in tfbooth/photo and tfbooth/video.' : '✓ MP4 saved in tfbooth/video. Download the PNG to keep a photo copy.';
       }
     }
   } catch (error) { if (error.name !== 'AbortError') $('archive-folder-status').textContent = error.message; }
 });
-restoreArchive().then(ready => { if (ready) $('archive-folder-status').textContent = '✓ Automatic saves enabled: cssbooth/photo and cssbooth/video.'; });
+restoreArchive().then(ready => { if (ready) $('archive-folder-status').textContent = '✓ Automatic saves enabled: tfbooth/photo and tfbooth/video.'; });
 createDesignOptions(); showView('capture'); updateCapture(); requestAnimationFrame(frame);

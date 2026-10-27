@@ -67,7 +67,7 @@ test('PNG export uses browser folder permission without requiring a laptop serve
   }, () => 'saved.png', { generation: 1, resultBlob: blob }, () => status);
   await archive(blob, 1);
   assert.equal(requests, 1);
-  assert.match(status.textContent, /Photo saved in cssbooth\/photo/);
-  assert.match(source, /link.download = `css-four-cut-/);
+  assert.match(status.textContent, /Photo saved in tfbooth\/photo/);
+  assert.match(source, /link.download = `tf-four-cut-/);
   assert.doesNotMatch(source, /boothApi|BOOTH_SITE_ORIGIN|127\.0\.0\.1|targetAddressSpace/);
 });

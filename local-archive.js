@@ -1,6 +1,6 @@
 let archive = null;
 const database = () => new Promise((resolve, reject) => {
-  const request = indexedDB.open('cssbooth-folder', 1);
+  const request = indexedDB.open('tfbooth-folder', 1);
   request.onupgradeneeded = () => request.result.createObjectStore('settings');
   request.onsuccess = () => resolve(request.result);
   request.onerror = () => reject(request.error);
@@ -26,8 +26,8 @@ export async function restoreArchive() {
 export async function chooseArchive() {
   if (!folderSavingSupported()) throw new Error('Folder saving needs Chrome or Edge. You can still download both files.');
   if (!archive || await archive.requestPermission({ mode: 'readwrite' }) !== 'granted') {
-    const selected = await window.showDirectoryPicker({ id: 'cssbooth', startIn: 'downloads', mode: 'readwrite' });
-    archive = selected.name === 'cssbooth' ? selected : await selected.getDirectoryHandle('cssbooth', { create: true });
+    const selected = await window.showDirectoryPicker({ id: 'tfbooth', startIn: 'downloads', mode: 'readwrite' });
+    archive = selected.name === 'tfbooth' ? selected : await selected.getDirectoryHandle('tfbooth', { create: true });
   }
   await archive.getDirectoryHandle('photo', { create: true });
   await archive.getDirectoryHandle('video', { create: true });

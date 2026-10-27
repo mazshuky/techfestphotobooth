@@ -4,8 +4,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 export const STATIC_FILES = Object.freeze([
-  'index.html', 'styles.css', 'app.js', 'photo-session.js', 'photo-strip.js', 'local-archive.js', 'video-export.js', 'clip-capture.js', 'vendor/mediabunny.mjs', 'vendor/mediabunny-LICENSE',
-  'assets/css-logo.png', 'assets/nottingham-logo.png', 'assets/favicon.svg',
+  'index.html', 'styles.css', 'app.js', 'photo-session.js', 'photo-strip.js', 'local-archive.js', 'video-export.js', 'clip-capture.js', 'vendor/mediabunny.mjs', 'vendor/mediabunny-LICENSE', 'drive-qr.js', 'vendor/qrcode.mjs', 'vendor/qrcode-LICENSE',
+  'assets/tf-logo.png', 'assets/nottingham-logo.png', 'assets/favicon.svg',
   'assets/fonts/DM-Sans-OFL.txt', 'assets/fonts/Pixelify-Sans-OFL.txt',
   ...['dm-sans', 'pixelify'].flatMap(font => [400, 500, 600, 700].map(weight => `assets/fonts/${font}-${weight}.ttf`))
 ]);
